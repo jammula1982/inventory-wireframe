@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inventory Management System – Functional Demo</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f6fa;
+        }
+
+        header {
+            background: #2c3e50;
+            color: #fff;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .container {
+            display: flex;
+            min-height: calc(100vh - 50px);
+        }
+
+        aside {
+            width: 220px;
+            background: #34495e;
+            color: #fff;
+            padding: 15px;
+        }
+
+        aside ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        aside ul li {
+            padding: 10px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        aside ul li:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        main {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .card {
+            background: #fff;
+            padding: 15px;
+            border-radius: 6px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: #fff;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background: #ecf0f1;
+        }
+
+        .btn {
+            padding: 6px 10px;
+            border: none;
+            background: #2980b9;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .btn.secondary {
+            background: #7f8c8d;
+        }
+
+        .btn.danger {
+            background: #c0392b;
+        }
+
+        input,
+        select {
+            padding: 8px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        /* Accordion */
+        .accordion {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+        }
+
+        .accordion-header {
+            padding: 12px 15px;
+            cursor: pointer;
+            font-weight: bold;
+            background: #ecf0f1;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .accordion-content {
+            display: none;
+            padding: 15px;
+        }
+
+        .accordion.active .accordion-content {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <strong>Inventory System</strong>
+        <span>Demo User</span>
+    </header>
+
+    <div class="container">
+        <aside>
+            <ul>
+                <li onclick="showView('dashboard')">Dashboard</li>
+                <li onclick="showView('products')">Products</li>
+                <li onclick="showView('add')">Add Item</li>
+                <li onclick="showView('admin')">Admin Masters</li>
+            </ul>
+        </aside>
+
+        <main>
+            <section id="dashboard">
+                <h2>Dashboard</h2>
+                <div class="cards">
+                    <div class="card">Total Items: <span id="totalItems">0</span></div>
+                    <div class="card">Low Stock: <span id="lowStock">0</span></div>
+                </div>
+            </section>
+
+            <section id="products" class="hidden">
+                <h2>Products</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Stone</th>
+                            <th>Category</th>
+                            <th>Qty</th>
+                            <th>Carat</th>
+                            <th>Color</th>
+                            <th>Clarity</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productTable"></tbody>
+                </table>
+            </section>
+
+            <section id="add" class="hidden">
+                <h2>Add Precious Stone Item</h2>
+                <input id="code" placeholder="Item Code" />
+                <input id="name" placeholder="Stone Name" />
+                <select id="category"></select>
+                <input id="qty" type="number" placeholder="Quantity" />
+                <input id="carat" type="number" step="0.01" placeholder="Carat" />
+                <select id="color"></select>
+                <input id="clarity" placeholder="Clarity" />
+                <select id="cut"></select>
+                <select id="origin"></select>
+                <input id="cert" placeholder="Certification" />
+                <button class="btn" onclick="addItem()">Save Item</button>
+            </section>
+
+            <section id="admin" class="hidden">
+                <h2>Admin – Master Data</h2>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">Categories <span>+</span></div>
+                    <div class="accordion-content">
+                        <input id="newCategory" placeholder="Add Category" />
+                        <button class="btn" onclick="addMaster('categories','newCategory')">Add</button>
+                        <table>
+                            <tbody id="categoriesList"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">Colors <span>+</span></div>
+                    <div class="accordion-content">
+                        <input id="newColor" placeholder="Add Color" />
+                        <button class="btn" onclick="addMaster('colors','newColor')">Add</button>
+                        <table>
+                            <tbody id="colorsList"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">Origins <span>+</span></div>
+                    <div class="accordion-content">
+                        <input id="newOrigin" placeholder="Add Origin" />
+                        <button class="btn" onclick="addMaster('origins','newOrigin')">Add</button>
+                        <table>
+                            <tbody id="originsList"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">Cut Types <span>+</span></div>
+                    <div class="accordion-content">
+                        <input id="newCut" placeholder="Add Cut" />
+                        <button class="btn" onclick="addMaster('cuts','newCut')">Add</button>
+                        <table>
+                            <tbody id="cutsList"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Ensure JS runs after DOM is loaded
+        (function () {
+            let inventory = JSON.parse(localStorage.getItem('inventory')) || [];
+            let masters = JSON.parse(localStorage.getItem('masters')) || {
+                categories: ['Precious', 'Semi-Precious'],
+                colors: ['Red', 'Blue'],
+                origins: ['India'],
+                cuts: ['Round']
+            };
+
+            function save() {
+                localStorage.setItem('inventory', JSON.stringify(inventory));
+                localStorage.setItem('masters', JSON.stringify(masters));
+            }
+
+            window.showView = function (view) {
+                document.querySelectorAll('main section').forEach(s => s.classList.add('hidden'));
+                document.getElementById(view).classList.remove('hidden');
+                loadMasters();
+                render();
+            };
+
+            function render() {
+                const tbody = document.getElementById('productTable');
+                tbody.innerHTML = '';
+                let low = 0;
+                inventory.forEach((item, i) => {
+                    if (item.qty < 30) low++;
+                    tbody.innerHTML += `<tr>
+        <td>${item.code}</td><td>${item.name}</td><td>${item.category}</td>
+        <td>${item.qty}</td><td>${item.carat || '-'}</td><td>${item.color || '-'}</td>
+        <td>${item.clarity || '-'}</td><td>${item.qty < 30 ? 'Low' : 'OK'}</td>
+        <td><button class='btn secondary' onclick='editItem(${i})'>Edit</button></td>
+      </tr>`;
+                });
+                document.getElementById('totalItems').innerText = inventory.length;
+                document.getElementById('lowStock').innerText = low;
+            }
+
+            window.addItem = function () {
+                inventory.push({
+                    code: code.value,
+                    name: name.value,
+                    category: category.value,
+                    qty: parseInt(qty.value || 0),
+                    carat: carat.value,
+                    color: color.value,
+                    clarity: clarity.value,
+                    cut: cut.value,
+                    origin: origin.value,
+                    cert: cert.value
+                });
+                save();
+                showView('products');
+            };
+
+            window.editItem = function (i) {
+                const q = prompt('New quantity', inventory[i].qty);
+                if (q !== null) {
+                    inventory[i].qty = parseInt(q);
+                    save();
+                    render();
+                }
+            };
+
+            window.addMaster = function (type, inputId) {
+                const v = document.getElementById(inputId).value;
+                if (!v) return;
+                masters[type].push(v);
+                save();
+                loadMasters();
+                document.getElementById(inputId).value = '';
+            };
+
+            function loadMasters() {
+                ['categories', 'colors', 'origins', 'cuts'].forEach(type => {
+                    const select = document.getElementById(type.slice(0, -1));
+                    if (select) select.innerHTML = masters[type].map(v => `<option>${v}</option>`).join('');
+                    const tbody = document.getElementById(type + 'List');
+                    if (tbody) {
+                        tbody.innerHTML = masters[type].map((v, i) => `<tr>
+          <td>${v}</td>
+          <td>
+            <button class='btn secondary' onclick="editMaster('${type}',${i})">Edit</button>
+            <button class='btn danger' onclick="deleteMaster('${type}',${i})">Delete</button>
+          </td>
+        </tr>`).join('');
+                    }
+                });
+            }
+
+            window.editMaster = function (type, i) {
+                const v = prompt('Edit value', masters[type][i]);
+                if (v) {
+                    masters[type][i] = v;
+                    save();
+                    loadMasters();
+                }
+            };
+
+            window.deleteMaster = function (type, i) {
+                if (confirm('Delete this value?')) {
+                    masters[type].splice(i, 1);
+                    save();
+                    loadMasters();
+                }
+            };
+
+            window.toggleAccordion = function (el) {
+                const acc = el.parentElement;
+                acc.classList.toggle('active');
+                el.querySelector('span').innerText = acc.classList.contains('active') ? '-' : '+';
+            };
+
+            showView('dashboard');
+        })();
+    </script>
+</body>
+
+</html>
