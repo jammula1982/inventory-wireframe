@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f5f5f5;
+        }
+
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav {
+            background: #34495e;
+            color: white;
+            display: flex;
+            gap: 20px;
+            padding: 10px;
+        }
+
+        nav button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        nav button.active {
+            text-decoration: underline;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        section {
+            display: none;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button.action {
+            margin-top: 15px;
+            padding: 10px 15px;
+            border: none;
+            background: #3498db;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button.action:hover {
+            background: #2980b9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background: #ecf0f1;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Inventory Management System</h1>
+    </header>
+
+    <nav>
+        <button class="tab-btn active" data-target="products">Products</button>
+        <button class="tab-btn" data-target="pricing">Pricing</button>
+        <button class="tab-btn" data-target="inventory">Inventory</button>
+        <button class="tab-btn" data-target="invoices">Invoices</button>
+        <button class="tab-btn" data-target="attributes">Attributes</button>
+    </nav>
+
+    <main>
+
+        <!-- Products Section -->
+        <section id="products" class="active">
+            <h2>Product & Item Management</h2>
+            <div class="grid">
+                <div><label>Product Name</label><input type="text" placeholder="Enter product name"></div>
+                <div><label>Item Code</label><input type="text" placeholder="Enter item code"></div>
+                <div><label>Category</label><select>
+                        <option>Gemstone</option>
+                        <option>Jewelry</option>
+                    </select></div>
+                <div><label>Sub-category</label><select>
+                        <option>Ring</option>
+                        <option>Necklace</option>
+                    </select></div>
+                <div><label>Unit of Measure</label><select>
+                        <option>Pcs</option>
+                        <option>Carat</option>
+                        <option>Kg</option>
+                        <option>Box</option>
+                    </select></div>
+                <div><label>Status</label><select>
+                        <option>Active</option>
+                        <option>Inactive</option>
+                    </select></div>
+                <div><label>Upload Images</label><input type="file" multiple></div>
+                <div><label>Description</label><textarea placeholder="Enter product description"></textarea></div>
+            </div>
+            <button class="action">Add / Update Product</button>
+
+            <h3>Product List</h3>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Item Code</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                <tr>
+                    <td>Ruby</td>
+                    <td>R001</td>
+                    <td>Gemstone</td>
+                    <td>Active</td>
+                    <td>Edit | Delete</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Pricing Section -->
+        <section id="pricing">
+            <h2>Pricing Management</h2>
+            <div class="grid">
+                <div><label>Product</label><select>
+                        <option>Ruby</option>
+                        <option>Diamond</option>
+                    </select></div>
+                <div><label>Standard Selling Price</label><input type="number" placeholder="Enter price"></div>
+                <div><label>Cost Price</label><input type="number" placeholder="Enter cost"></div>
+                <div><label>Price List</label><select>
+                        <option>Retail</option>
+                        <option>Wholesale</option>
+                        <option>Distributor</option>
+                    </select></div>
+                <div><label>Discount (%)</label><input type="number" placeholder="Enter discount"></div>
+                <div><label>Tax Inclusive</label><select>
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select></div>
+            </div>
+            <button class="action">Set Pricing</button>
+        </section>
+
+        <!-- Inventory Section -->
+        <section id="inventory">
+            <h2>Inventory Tracking</h2>
+
+            <!-- Add Inventory Batch -->
+            <h3>Add / Update Inventory</h3>
+            <div class="grid">
+                <div><label>Product</label><select>
+                        <option>Ruby</option>
+                        <option>Diamond</option>
+                    </select></div>
+                <div><label>Price</label><input type="number" placeholder="Enter price"></div>
+                <div><label>Quantity</label><input type="number" placeholder="Enter quantity"></div>
+                <div><label>Date</label><input type="date" value=""></div>
+                <div><label>Low-stock Alert</label><input type="number" placeholder="Enter threshold"></div>
+                <div><label>Stock Valuation Method</label><select>
+                        <option>FIFO</option>
+                        <option>LIFO</option>
+                        <option>Average Cost</option>
+                    </select></div>
+            </div>
+            <button class="action">Add / Update Inventory</button>
+
+            <!-- Current Inventory List -->
+            <h3>Current Inventory</h3>
+            <table>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Date Added</th>
+                    <th>Low Stock</th>
+                    <th>Actions</th>
+                </tr>
+                <tr>
+                    <td>Ruby</td>
+                    <td>$100</td>
+                    <td>50</td>
+                    <td>2025-12-01</td>
+                    <td>10</td>
+                    <td>Edit | Delete</td>
+                </tr>
+                <tr>
+                    <td>Ruby</td>
+                    <td>$120</td>
+                    <td>30</td>
+                    <td>2025-12-15</td>
+                    <td>5</td>
+                    <td>Edit | Delete</td>
+                </tr>
+            </table>
+
+            <!-- Inventory History -->
+            <h3>Inventory / Price History</h3>
+            <table>
+                <tr>
+                    <th>Date</th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity Changed</th>
+                    <th>Action</th>
+                </tr>
+                <tr>
+                    <td>2025-12-01</td>
+                    <td>Ruby</td>
+                    <td>$100</td>
+                    <td>50</td>
+                    <td>Added</td>
+                </tr>
+                <tr>
+                    <td>2025-12-15</td>
+                    <td>Ruby</td>
+                    <td>$120</td>
+                    <td>30</td>
+                    <td>Added</td>
+                </tr>
+                <tr>
+                    <td>2025-12-20</td>
+                    <td>Ruby</td>
+                    <td>$120</td>
+                    <td>-10</td>
+                    <td>Sold</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Invoices Section -->
+        <section id="invoices">
+            <h2>Invoice Creation</h2>
+
+            <!-- Customer & Invoice Info -->
+            <div class="grid">
+                <div><label>Customer Name</label><input type="text" placeholder="Enter customer name"></div>
+                <div><label>Invoice Number</label><input type="text" placeholder="Auto-generated"></div>
+                <div><label>Invoice Date</label><input type="date"></div>
+                <div><label>Due Date</label><input type="date"></div>
+            </div>
+
+            <!-- Items Table -->
+            <h3>Items</h3>
+            <table id="invoice-items-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Discount</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <button class="action" onclick="addInvoiceItem()">Add Item</button>
+
+            <!-- Invoice Total -->
+            <div style="margin-top: 15px; font-weight: bold;">
+                <span>Total Amount: $</span><span id="invoice-total">0.00</span>
+            </div>
+
+            <button class="action" style="margin-top:20px;" onclick="createInvoice()">Create Invoice</button>
+
+            <!-- Invoice List -->
+            <h3>Invoice List</h3>
+            <table>
+                <tr>
+                    <th>Invoice #</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+                <tr>
+                    <td>INV001</td>
+                    <td>John Doe</td>
+                    <td>2025-12-20</td>
+                    <td>$500</td>
+                    <td>View | Edit | Delete</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Attributes Section -->
+        <section id="attributes">
+            <h2>Attributes Management</h2>
+
+            <!-- Categories -->
+            <h3>Manage Categories</h3>
+            <div class="grid">
+                <div><label>Category Name</label><input type="text" placeholder="Enter category"></div>
+                <div><label>Description</label><input type="text" placeholder="Description (optional)"></div>
+            </div>
+            <button class="action">Add / Update Category</button>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+                <tr>
+                    <td>Gemstone</td>
+                    <td>Precious stones</td>
+                    <td>Edit | Delete</td>
+                </tr>
+                <tr>
+                    <td>Jewelry</td>
+                    <td>Rings, Necklaces, etc.</td>
+                    <td>Edit | Delete</td>
+                </tr>
+            </table>
+
+            <!-- Sub-categories -->
+            <h3>Manage Sub-categories</h3>
+            <div class="grid">
+                <div><label>Sub-category Name</label><input type="text" placeholder="Enter sub-category"></div>
+                <div><label>Parent Category</label><select>
+                        <option>Gemstone</option>
+                        <option>Jewelry</option>
+                    </select></div>
+            </div>
+            <button class="action">Add / Update Sub-category</button>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Parent Category</th>
+                    <th>Actions</th>
+                </tr>
+                <tr>
+                    <td>Ring</td>
+                    <td>Jewelry</td>
+                    <td>Edit | Delete</td>
+                </tr>
+                <tr>
+                    <td>Necklace</td>
+                    <td>Jewelry</td>
+                    <td>Edit | Delete</td>
+                </tr>
+            </table>
+
+            <!-- Variants -->
+            <h3>Manage Variants</h3>
+            <div class="grid">
+                <div><label>Variant Type</label>
+                    <select>
+                        <option>Color</option>
+                        <option>Size</option>
+                        <option>Cut</option>
+                        <option>Grade</option>
+                    </select>
+                </div>
+                <div><label>Variant Value</label><input type="text" placeholder="Enter value (e.g., Red, Small, Round)">
+                </div>
+            </div>
+            <button class="action">Add / Update Variant</button>
+            <table>
+                <tr>
+                    <th>Type</th>
+                    <th>Value</th>
+                    <th>Actions</th>
+                </tr>
+                <tr>
+                    <td>Color</td>
+                    <td>Red</td>
+                    <td>Edit | Delete</td>
+                </tr>
+                <tr>
+                    <td>Size</td>
+                    <td>Small</td>
+                    <td>Edit | Delete</td>
+                </tr>
+            </table>
+        </section>
+
+        <script>
+            // Tab switching
+            const tabs = document.querySelectorAll('.tab-btn');
+            const sections = document.querySelectorAll('section');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    const target = tab.getAttribute('data-target');
+                    sections.forEach(sec => sec.classList.toggle('active', sec.id === target));
+                });
+            });
+
+            // Invoice dynamic items
+            let invoiceCounter = 0;
+            function addInvoiceItem() {
+                invoiceCounter++;
+                const tableBody = document.querySelector("#invoice-items-table tbody");
+                const row = document.createElement("tr");
+                row.setAttribute("id", "item-row-" + invoiceCounter);
+                row.innerHTML = `
+            <td>
+                <select class="item-product">
+                    <option>Ruby</option>
+                    <option>Diamond</option>
+                </select>
+            </td>
+            <td><input type="number" class="item-price" value="0" oninput="updateRowTotal(${invoiceCounter})"></td>
+            <td><input type="number" class="item-qty" value="1" min="1" oninput="updateRowTotal(${invoiceCounter})"></td>
+            <td><input type="number" class="item-discount" value="0" oninput="updateRowTotal(${invoiceCounter})"></td>
+            <td class="item-total">0</td>
+            <td><button onclick="removeInvoiceItem(${invoiceCounter})">Remove</button></td>
+        `;
+                tableBody.appendChild(row);
+            }
+
+            function updateRowTotal(id) {
+                const row = document.getElementById("item-row-" + id);
+                const price = parseFloat(row.querySelector(".item-price").value) || 0;
+                const qty = parseFloat(row.querySelector(".item-qty").value) || 0;
+                const discount = parseFloat(row.querySelector(".item-discount").value) || 0;
+                const total = (price * qty) - discount;
+                row.querySelector(".item-total").textContent = total.toFixed(2);
+                updateInvoiceTotal();
+            }
+
+            function removeInvoiceItem(id) {
+                const row = document.getElementById("item-row-" + id);
+                row.remove();
+                updateInvoiceTotal();
+            }
+
+            function updateInvoiceTotal() {
+                let total = 0;
+                document.querySelectorAll(".item-total").forEach(td => {
+                    total += parseFloat(td.textContent) || 0;
+                });
+                document.getElementById("invoice-total").textContent = total.toFixed(2);
+            }
+
+            function createInvoice() {
+                alert("Invoice created! Total amount: $" + document.getElementById("invoice-total").textContent);
+            }
+        </script>
+
+</body>
+
+</html>
